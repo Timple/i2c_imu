@@ -155,9 +155,10 @@ void I2cImu::update()
 
 		imu_msg.header.stamp = current_time;
 		imu_msg.header.frame_id = imu_frame_id_;
-		imu_msg.orientation.x = imuData.fusionQPose.x();
-		imu_msg.orientation.y = imuData.fusionQPose.y();
-		imu_msg.orientation.z = imuData.fusionQPose.z();
+                // NED --> ENU coordinate frame conversion: Swap X->Y, invert Z
+		imu_msg.orientation.x = imuData.fusionQPose.y();
+		imu_msg.orientation.y = imuData.fusionQPose.x();
+		imu_msg.orientation.z = -imuData.fusionQPose.z();
 		imu_msg.orientation.w = imuData.fusionQPose.scalar();
 
 		imu_msg.angular_velocity.x = imuData.gyro.x();
